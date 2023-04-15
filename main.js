@@ -7,9 +7,14 @@ import { gsap } from "gsap";
  * Textures
  */
 const loadPercent = document.querySelector("h1#load-percent");
-const loadingManager = new THREE.LoadingManager(() => {
-    loadPercent.dataset.percent = "100";
-});
+const loadingManager = new THREE.LoadingManager(
+    () => {
+        loadPercent.dataset.percent = "100";
+    },
+    (url, itemsLoaded, itemsTotal) => {
+        loadPercent.textContent = Math.floor((itemsLoaded / itemsTotal) * 100) + "%";
+    }
+);
 const textureLoader = new THREE.TextureLoader(loadingManager);
 const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager);
 
