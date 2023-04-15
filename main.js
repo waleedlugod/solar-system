@@ -258,19 +258,7 @@ const pluto = new THREE.Mesh(
 pluto.position.z = planetsParameters[9].distance;
 
 const planets = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, pluto];
-scene.add(
-    sun,
-    mercury,
-    venus,
-    earth,
-    moon,
-    mars,
-    jupiter,
-    saturnGroup,
-    uranusGroup,
-    neptune,
-    pluto
-);
+scene.add(sun, mercury, venus, earth, moon, mars, jupiter, saturnGroup, uranusGroup, neptune, pluto);
 
 /**
  * Lights
@@ -293,13 +281,9 @@ const controlsParameters = {
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
 camera.position.x =
-    Math.sin(controlsParameters.cameraAngle) *
-    planets[controlsParameters.focus].geometry.parameters.radius *
-    3;
+    Math.sin(controlsParameters.cameraAngle) * planets[controlsParameters.focus].geometry.parameters.radius * 3;
 camera.position.z =
-    Math.cos(controlsParameters.cameraAngle) *
-    planets[controlsParameters.focus].geometry.parameters.radius *
-    3;
+    Math.cos(controlsParameters.cameraAngle) * planets[controlsParameters.focus].geometry.parameters.radius * 3;
 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
@@ -320,13 +304,9 @@ function focusPlanet() {
     const destination = new THREE.Vector3();
     destination.copy(planets[controlsParameters.focus].position);
     destination.x +=
-        Math.sin(controlsParameters.cameraAngle) *
-        planets[controlsParameters.focus].geometry.parameters.radius *
-        3;
+        Math.sin(controlsParameters.cameraAngle) * planets[controlsParameters.focus].geometry.parameters.radius * 3;
     destination.z +=
-        Math.cos(controlsParameters.cameraAngle) *
-        planets[controlsParameters.focus].geometry.parameters.radius *
-        3;
+        Math.cos(controlsParameters.cameraAngle) * planets[controlsParameters.focus].geometry.parameters.radius * 3;
     gsap.to(camera.position, {
         x: destination.x,
         y: destination.y,
@@ -347,12 +327,21 @@ const navigateIn = document.querySelector("#navigate-in");
 navigateIn.addEventListener("click", () => {
     if (controlsParameters.focus > 0) controlsParameters.focus--;
     focusPlanet();
+    changeNavStyle(controlsParameters.focus, controlsParameters.focus + 1);
 });
 const navigateOut = document.querySelector("#navigate-out");
 navigateOut.addEventListener("click", () => {
     if (controlsParameters.focus < planets.length - 1) controlsParameters.focus++;
     focusPlanet();
+    changeNavStyle(controlsParameters.focus, controlsParameters.focus - 1);
 });
+
+function changeNavStyle(currentIdx, prevIdx) {
+    const prev = document.querySelector(`.fa-stack:nth-of-type(${prevIdx + 1}) > .fa-solid`);
+    prev.style.opacity = "0";
+    const current = document.querySelector(`.fa-stack:nth-of-type(${currentIdx + 1}) > .fa-solid`);
+    current.style.opacity = "1";
+}
 
 /**
  * Renderer
