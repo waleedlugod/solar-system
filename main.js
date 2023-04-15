@@ -56,6 +56,8 @@ const canvas = document.querySelector("canvas.webgl");
 // Scene
 const scene = new THREE.Scene();
 scene.background = envMap;
+scene.backgroundIntensity = 0.4;
+gui.add(scene, "backgroundIntensity", 0, 1, 0.001);
 
 /**
  * Objects
@@ -304,9 +306,15 @@ function focusPlanet() {
     const destination = new THREE.Vector3();
     destination.copy(planets[controlsParameters.focus].position);
     destination.x +=
-        Math.sin(controlsParameters.cameraAngle) * planets[controlsParameters.focus].geometry.parameters.radius * 3;
+        Math.sin(controlsParameters.cameraAngle) *
+        planets[controlsParameters.focus].geometry.parameters.radius *
+        Math.min(window.innerWidth / window.innerHeight, window.innerHeight / window.innerWidth) *
+        13;
     destination.z +=
-        Math.cos(controlsParameters.cameraAngle) * planets[controlsParameters.focus].geometry.parameters.radius * 3;
+        Math.cos(controlsParameters.cameraAngle) *
+        planets[controlsParameters.focus].geometry.parameters.radius *
+        Math.min(window.innerWidth / window.innerHeight, window.innerHeight / window.innerWidth) *
+        13;
     gsap.to(camera.position, {
         x: destination.x,
         y: destination.y,
@@ -317,6 +325,7 @@ function focusPlanet() {
         y: planets[controlsParameters.focus].position.y,
         z: planets[controlsParameters.focus].position.z,
     });
+    changeNavStyle(controlsParameters.focus);
 }
 gui.add(controlsParameters, "focus", 0, planets.length - 1, 1).onChange(focusPlanet);
 gui.add(controlsParameters, "cameraAngle", 0, Math.PI * 2, 0.01).onChange(focusPlanet);
@@ -327,20 +336,19 @@ const navigateIn = document.querySelector("#navigate-in");
 navigateIn.addEventListener("click", () => {
     if (controlsParameters.focus > 0) controlsParameters.focus--;
     focusPlanet();
-    changeNavStyle(controlsParameters.focus, controlsParameters.focus + 1);
 });
 const navigateOut = document.querySelector("#navigate-out");
 navigateOut.addEventListener("click", () => {
     if (controlsParameters.focus < planets.length - 1) controlsParameters.focus++;
     focusPlanet();
-    changeNavStyle(controlsParameters.focus, controlsParameters.focus - 1);
 });
 
-function changeNavStyle(currentIdx, prevIdx) {
-    const prev = document.querySelector(`.fa-stack:nth-of-type(${prevIdx + 1}) > .fa-solid`);
-    prev.style.opacity = "0";
-    const current = document.querySelector(`.fa-stack:nth-of-type(${currentIdx + 1}) > .fa-solid`);
-    current.style.opacity = "1";
+function changeNavStyle(currentIdx) {
+    const current = document.querySelectorAll(`.fa-stack > .fa-solid`);
+    for (let i = 0; i < current.length; i++) {
+        current[i].style.opacity = "0";
+    }
+    current[currentIdx].style.opacity = "1";
 }
 
 /**
