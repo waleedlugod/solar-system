@@ -97,6 +97,12 @@ span.fa-stack {
     pointer-events: none;
 }
 
+@media (max-width: 768px) {
+    #load-percent {
+        font-size: 14rem;
+    }
+}
+
 @media (max-width: 640px) {
     i {
         font-size: 0.875em;
@@ -107,11 +113,5 @@ span.fa-stack {
     #load-percent {
         inset: auto auto 1rem 2rem;
         font-size: 4.5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    #load-percent {
-        font-size: 14rem;
     }
 }
