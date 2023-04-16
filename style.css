@@ -92,7 +92,7 @@ span.fa-stack {
     color: #e5e5cb;
 }
 
-#loading:has(#load-percent[data-percent="101"]) {
+#loading:has(#load-percent[data-percent="100"]) {
     opacity: 0;
     pointer-events: none;
 }
