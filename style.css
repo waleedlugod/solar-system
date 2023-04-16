@@ -20,6 +20,7 @@ nav {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
     z-index: 1;
     pointer-events: none;
 }
@@ -38,10 +39,25 @@ button {
 i {
     color: #e5e5cb;
     text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+    height: 1em;
+}
+
+i.fa-stack-1x {
+    line-height: normal;
+}
+
+span.fa-stack {
+    width: 1em;
+    height: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .fa-stack > .fa-solid {
     opacity: 0;
+    cursor: pointer;
+    pointer-events: auto;
 }
 
 .webgl {

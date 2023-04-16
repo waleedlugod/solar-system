@@ -302,7 +302,7 @@ window.addEventListener("resize", () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-function focusPlanet() {
+function updateFocus() {
     const destination = new THREE.Vector3();
     destination.copy(planets[controlsParameters.focus].position);
     destination.x +=
@@ -327,28 +327,36 @@ function focusPlanet() {
     });
     changeNavStyle(controlsParameters.focus);
 }
-gui.add(controlsParameters, "focus", 0, planets.length - 1, 1).onChange(focusPlanet);
-gui.add(controlsParameters, "cameraAngle", 0, Math.PI * 2, 0.01).onChange(focusPlanet);
-focusPlanet();
+gui.add(controlsParameters, "focus", 0, planets.length - 1, 1).onChange(updateFocus);
+gui.add(controlsParameters, "cameraAngle", 0, Math.PI * 2, 0.01).onChange(updateFocus);
+updateFocus();
 
 // Navigation
 const navigateIn = document.querySelector("#navigate-in");
 navigateIn.addEventListener("click", () => {
     if (controlsParameters.focus > 0) controlsParameters.focus--;
-    focusPlanet();
+    updateFocus();
 });
 const navigateOut = document.querySelector("#navigate-out");
 navigateOut.addEventListener("click", () => {
     if (controlsParameters.focus < planets.length - 1) controlsParameters.focus++;
-    focusPlanet();
+    updateFocus();
 });
 
 function changeNavStyle(currentIdx) {
-    const current = document.querySelectorAll(`.fa-stack > .fa-solid`);
-    for (let i = 0; i < current.length; i++) {
-        current[i].style.opacity = "0";
+    const filledCircles = document.querySelectorAll(`.fa-stack > .fa-solid`);
+    for (let i = 0; i < filledCircles.length; i++) {
+        filledCircles[i].style.opacity = "0";
     }
-    current[currentIdx].style.opacity = "1";
+    filledCircles[currentIdx].style.opacity = "1";
+}
+
+const planetNavs = document.querySelectorAll(".fa-stack");
+for (let i = 0; i < planetNavs.length; i++) {
+    planetNavs[i].addEventListener("click", () => {
+        controlsParameters.focus = i;
+        updateFocus();
+    });
 }
 
 /**
