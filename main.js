@@ -66,61 +66,61 @@ gui.add(scene, "backgroundIntensity", 0, 1, 0.001);
 // Parameters
 const planetsParameters = [
     {
-        // Sun
+        name: "sun",
         radius: 696.434,
         spin: Math.PI * 2 * (1 / 25.05),
         distance: 0,
     },
     {
-        // Mercury
+        name: "mercury",
         radius: 2.4397,
         spin: Math.PI * 2 * (1 / 58.646),
         distance: 1000,
     },
     {
-        // Venus
+        name: "venus",
         radius: 6.0518,
         spin: Math.PI * 2 * (1 / -243.0226),
         distance: 1100,
     },
     {
-        // Earth
+        name: "earth",
         radius: 6.371,
         spin: Math.PI * 2 * (1 / 0.99726968),
         distance: 1200,
     },
     {
-        // Mars
+        name: "mars",
         radius: 3.3895,
         spin: Math.PI * 2 * (1 / 1.025957),
         distance: 1250,
     },
     {
-        // Jupiter
+        name: "jupiter",
         radius: 69.911,
         spin: Math.PI * 2 * (1 / 0.41354167),
         distance: 1400,
     },
     {
-        // Saturn
+        name: "saturn",
         radius: 58.232,
         spin: Math.PI * 2 * (1 / 0.43958333),
         distance: 1700,
     },
     {
-        // Uranus
+        name: "uranus",
         radius: 25.362,
         spin: Math.PI * 2 * (1 / 0.708),
         distance: 2000,
     },
     {
-        // Neptune
+        name: "neptune",
         radius: 24.622,
         spin: Math.PI * 2 * (1 / 0.6713),
         distance: 2200,
     },
     {
-        // Pluto
+        name: "pluto",
         radius: 1.1883,
         spin: Math.PI * 2 * (1 / -6.38723),
         distance: 2300,
@@ -344,11 +344,12 @@ navigateOut.addEventListener("click", () => {
 });
 
 function changeNavStyle(currentIdx) {
-    const filledCircles = document.querySelectorAll(`.fa-stack > .fa-solid`);
+    const filledCircles = document.querySelectorAll(".fa-stack > .fa-solid");
     for (let i = 0; i < filledCircles.length; i++) {
         filledCircles[i].style.opacity = "0";
     }
     filledCircles[currentIdx].style.opacity = "1";
+    document.querySelector(".planet-title").textContent = planetsParameters[currentIdx].name;
 }
 
 const planetNavs = document.querySelectorAll(".fa-stack");
